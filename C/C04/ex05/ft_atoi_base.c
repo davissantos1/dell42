@@ -12,6 +12,8 @@ int	ft_base_check(char *base)
 	{
 		if (base[i] == '+' || base[i] == '-')
 			return (0);
+		if ((base[i] >= 9 && base[i] <= 13) || base[i] == ' ')
+			return (0);
 		j = i + 1;
 		while(base[j])
 		{
@@ -23,26 +25,49 @@ int	ft_base_check(char *base)
 	}
 	return (1);
 }
-void	ft_putnbr(long int nbr, char *base, int base_num)
+int	ft_atoi(char *str, char *base, int base_num)
 {
-	if (nbr < 0)
-	{
-		write(1, "-", 1);
-		nbr = -nbr;
-	}
-	if (nbr > base_num - 1)
-		ft_putnbr(nbr / base_num, base, base_num);
-	write(1, &base[nbr % base_num], 1);
+	int j;
+	int nb;
+	int signs;
+	int result;
 
+	i = 0;
+	result = 0;
+	nb = 1;
+	signs = 1;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
+		i++;
+	while (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			signs *= -1;
+		i++;
+	}
+	while (nb)
+	{
+		j = 0;
+		while (base[j])
+		{
+			if (str[i] != base[j])
+				nb = 0;
+			else
+				result = result * basenum + (j - 1);
+			j++
+		}
+		i++;
+
+	}
+	return (signs * result);
 }
-void	ft_putnbr_base(int nbr, char *base)
+int	ft_atoi_base(char *str, char *base);
 {
 	int base_num;
 
 	base_num = 0;
-	if (!(ft_base_check(base)))
-		return;
+	if (!(ft_base_check(base)) || (ft_str_check(str, base))
+		return (0);
 	while (base[base_num])
 		base_num++;
-	ft_putnbr( (long int) nbr, base, base_num);
+	ft_atoi(str, base, base_num);
 }

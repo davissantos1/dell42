@@ -1,62 +1,93 @@
 #include <unistd.h>
 
-void	ft_puthex(unsigned long nbr)
+void	ft_puthex(unsigned long nbr, int pad)
 {
+	if (nbr <= 15 && pad == 1)
+		write(1, "0", 1);
 	if (nbr > 15)
-		ft_puthex(nbr / 16);
+	{
+		pad = 0;
+		ft_puthex(nbr/16, pad);
+	}
 	write(1, &"0123456789abcdef"[nbr % 16], 1);
 }
-void	ft_putstr_position(char *str, int start, int end)
+void	ft_addrpad(unsigned long nbr, int digits)
 {
-	while (start < end)
+	if (nbr > 15)
 	{
-		if (str[start] < 32 || str[start] == 127)
-			write(1, ".", 1); 
+		digits++;
+		ft_addrpad(nbr /16, digits);
+	}
+	if (nbr <= 15)
+	{	
+		while (digits < 16)
+		{
+			write(1, "0", 1);
+			digits++;
+		}
+	}
+}
+void	ft_print_memory_aux(char * c_addr, unsigned int size, int ch)
+{
+	int j;
+
+	j = 0;
+	while (j < ch)
+	{
+		ft_puthex(c_addr[j], 1);
+		j++;
+		if (j % 2 == 0)
+			write(1, " ", 1);
+		if (ch < 16 && j == ch)
+		{
+			ch = ((16 - ch)/2 + 2*(16 - ch));
+			while (ch--)
+				write(1, " ", 1);
+			ch = size % 16;
+		}
+	}
+	j = 0;
+	while (j < ch)
+	{
+		if (c_addr[j] > 31 && c_addr[j] <= 126)
+			write(1, &c_addr[j], 1);
 		else
-			write(1, &str[start], 1); 
-		start++;
+			write(1, ".", 1);
+		j++;
 	}
 }
 void	*ft_print_memory(void *addr, unsigned int size)
 {
-	int i;
-	int j;
-	void *addr_start;
+	int ch;
+	int lines;
+	char *c_addr;
 
-	i = 0;
-	j = 0;
-	addr_start = addr;
-	addr = (char *)addr;
-	while(i < size)
+	if (size == 0)
+		return ((void *)0);
+	else if (size % 16 == 0)
+		lines = size / 16;
+	else
+		lines = (size / 16) + 1;
+	ch = 16;
+	c_addr = (char *)addr;
+	while (lines--)
 	{
-		if (i == 0)
-		{
-			ft_puthex((unsigned long)addr);
-			write(1, ": ", 2);
-		}
-		ft_puthex(addr[i]);
-		if (((i + 1) % 2 == 0) && !(((i + 1) % 16 == 0)))
-			write(1, " ", 1);
-		if ((i + 1) % 16 == 0 || (i + 1 == size))
-		{
-			ft_putstr_position(addr_start, j, i);
-			j = i;
-		}
-		if ((i + 1) % 16 == 0)
-		{
-			write(1, "\n", 1);
-			ft_puthex((unsigned long)addr);
-		}
-		addr++;
-		i++;
+		if (lines == 0)
+			ch = size % 16;
+		ft_addrpad((unsigned long)c_addr, 1);
+		ft_puthex((unsigned long)c_addr, 1);
+		write(1, ": ", 2);
+		ft_print_memory_aux(c_addr, size, ch);
+		write(1, "\n", 1);
+		c_addr += 16;
 	}
-	return (addr_start);
+	return (addr);
 }
-
-int	main(void)
+/*
+int main(void)
 {
-	char *text = "Bonjour les amin ches\n\n\nc\n est fou\ntout\nce qu on peut faire avec\n\n\nprint_memory\n\n\n\nlol\nlol\n \n";
-	
-	text = ft_print_memory(text, 94);
-	return (0);
+    char data[] = "Bonjour les aminches\n\n\nc\n est fou\ntout\nce qu on peut faire avec\n\n\nprint_memory\n\n\n\nlol\nlol\n \n";
+    ft_print_memory(data, 92);
+    return (0);
 }
+*/

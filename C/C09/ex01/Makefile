@@ -1,4 +1,4 @@
-cc = cc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror -Iincludes
 LIB_NAME = libft.a
 SRC_BIN = srcs

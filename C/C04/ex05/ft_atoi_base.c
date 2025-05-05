@@ -34,7 +34,7 @@ int	ft_base_index(char ch, char *base)
 		index++;
 	return (index);
 }
-int	ft_str_check(char *str, char* base, int start)
+int	ft_str_check(char *str, char* base, int position)
 {
 	int j;
 	int flag;
@@ -43,7 +43,7 @@ int	ft_str_check(char *str, char* base, int start)
 	flag = 0;
 	while (base[j])
 	{
-		if (str[start] == base[j])
+		if (str[position] == base[j])
 			flag = 1;
 		j++;
 	}
@@ -60,11 +60,8 @@ int	ft_convert_int(char *str, char *base, int base_num, int i)
 	result = 0;
 	while (base[j])
 	{
-		while ((str[i] == base[j]) && str[i])
-		{
+		while (ft_str_check(str, base, i))
 			i++;
-			j = 0;
-		}
 		j++;
 	}
 	if (!ft_str_check(str, base, start))

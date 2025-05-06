@@ -1,5 +1,4 @@
 #include <unistd.h>
-#include <stdio.h>
 void	ft_swap(int *a, int *b)
 {
 	int temp;
@@ -52,7 +51,6 @@ int	ft_solution_solver(int *sol, int start, int end, int counter)
 		if (ft_solution_check(sol))
 		{
 			ft_putnbrs(sol);
-			usleep(10000);
 			return (1);
 		}
 		return (0);
@@ -80,8 +78,10 @@ int	ft_ten_queens_puzzle(void)
 	}
 	return (ft_solution_solver(sol, 0, 9, 0));
 }
+/*
 int	main(void)
 {
 	printf("\namount: %d\n", ft_ten_queens_puzzle());
 	return (0);
 }
+*/

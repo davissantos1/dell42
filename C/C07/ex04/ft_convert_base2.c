@@ -36,8 +36,8 @@ int	ft_base_index(char ch, char *base)
 }
 int	ft_convert_int(char *str, char *base, int base_num, int i)
 {
-	int index;
 	int result;
+	int index;
 	
 	result = 0;
 	while (str[i])
@@ -76,13 +76,3 @@ int	ft_atoi_base(char *str, char *base)
 	result = ft_convert_int(str, base, base_num, i);
 	return (signs * result);
 }
-/*
-int	main(void)
-{
-	char data[] = "  ---+--+101010ab567";
-	char base[] = "01";
-	
-	printf("%d\n", ft_atoi_base(data, base));
-	return (0);
-}
-*/
